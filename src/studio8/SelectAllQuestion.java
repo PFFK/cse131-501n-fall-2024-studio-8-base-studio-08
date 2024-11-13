@@ -4,12 +4,19 @@ public class SelectAllQuestion extends MultipleChoiceQuestion {
 
 	public SelectAllQuestion(String prompt, String answer, String[] choices) {
 		//Hint: 1 point per choice
-		//FIXME
+		super(prompt, answer, choices.length, choices); // each choice is worth 1 point
 	}
 	
+	  @Override
+	
 	public int checkAnswer(String givenAnswer) {
-		//FIXME Should return partial credit (if earned)!
-		return 0;
+		  // Count missing correct answers and incorrect answers
+	        int missingCorrect = findMissingCorrectAnswers(givenAnswer);
+	        int incorrectGiven = findIncorrectGivenAnswers(givenAnswer);
+
+	        // Calculate points: full points - penalty for wrong answers and missing answers
+	        int pointsEarned = getPoints() - missingCorrect - incorrectGiven;
+	        return Math.max(pointsEarned, 0); // ensure no negative scores
 	}
 
 	private int findMissingCorrectAnswers(String givenAnswer) {
